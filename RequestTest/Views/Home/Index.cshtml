@@ -1,0 +1,60 @@
+﻿@model RequestTest.Models.RequestResponseModel
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Data Viewer</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <h1>Send a Request to the Server</h1>
+    <form method="post">
+        <div>
+            <label for="RequestMessage">Enter your request:</label><br />
+            <input type="text" id="RequestMessage" name="RequestMessage" value="@Model.RequestMessage" required />
+        </div>
+        <br />
+        <button type="submit">Send</button>
+    </form>
+
+    @if (!string.IsNullOrEmpty(Model.ResponseMessage))
+    {
+        <h2>Data:</h2>
+        <table>
+            @{
+                string[] rows = Model.ResponseMessage.Split(new[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
+                string[] headers = rows[0].Split(',');
+
+  
+                <tr>
+                    @foreach (var header in headers)
+                    {
+                        <th>@header</th>
+                    }
+                </tr>
+
+                for (int i = 1; i < rows.Length; i++)
+                {
+                    <tr>
+                        @foreach (var cell in rows[i].Split(','))
+                        {
+                            <td>@cell</td>
+                        }
+                    </tr>
+                }
+            }
+        </table>
+    }
+</body>
+</html>
+
